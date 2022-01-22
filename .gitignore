@@ -1,0 +1,4 @@
+.env
+/salary
+/__pycache__
+/.idea
