@@ -1,7 +1,7 @@
 import requests
 
 
-def fetch_hh_vacancies_info(url, text, area, period=0, lang=''):
+def fetch_hh_vacancies_info(text, area, period=0, lang=''):
     payload = {
         "text": text,
         "area": area,
@@ -14,7 +14,7 @@ def fetch_hh_vacancies_info(url, text, area, period=0, lang=''):
     if lang:
         payload["text"] = f'{text} {lang}'
 
-    response = requests.get(url, params=payload)
+    response = requests.get('https://api.hh.ru/vacancies', params=payload)
     response.raise_for_status()
 
     all_vacancies = response.json()
@@ -29,7 +29,7 @@ def fetch_hh_vacancies_info(url, text, area, period=0, lang=''):
         for page in range(1, vacancies_pages):
             payload["page"] = page
 
-            response = requests.get(url, params=payload)
+            response = requests.get('https://api.hh.ru/vacancies', params=payload)
             response.raise_for_status()
 
             all_vacancies = response.json()
