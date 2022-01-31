@@ -33,7 +33,7 @@ if __name__ == '__main__':
         sj_salary_sum = 0
 
         for vacancy in found_hh_vacancies[0]:
-            vacancy_salary = fetch_hh.predict_rub_salary(vacancy)
+            vacancy_salary = fetch_hh.predict_rub_salary(vacancy['salary'])
             if vacancy_salary:
                 hh_salary_sum += int(vacancy_salary)
                 vacancies_hh_processed += 1

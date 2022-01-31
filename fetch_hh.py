@@ -39,9 +39,7 @@ def fetch_hh_vacancies_info(text, area, period=0, lang=''):
     return [vacancies_result, vacancies_count]
 
 
-def predict_rub_salary(vacancy):
-    salary = vacancy["salary"]
-
+def predict_rub_salary(salary):
     if salary is None or salary["currency"] != "RUR":
         return None
 
