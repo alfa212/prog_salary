@@ -10,11 +10,7 @@ import fetch_sj
 if __name__ == '__main__':
     load_dotenv()
 
-    hh_api_url = 'https://api.hh.ru/vacancies'
-
     hh_speciality = 'программист'
-
-    sj_api_url = 'https://api.superjob.ru/2.0/vacancies/'
 
     sj_headers = {
         'X-Api-App-Id': os.getenv('SJ_API_KEY')
@@ -27,8 +23,8 @@ if __name__ == '__main__':
     sj_table = []
 
     for language in pop_languages:
-        found_hh_vacancies = fetch_hh.fetch_hh_vacancies_info(hh_api_url, hh_speciality, 1, 30, language)
-        found_sj_vacancies = fetch_sj.fetch_sj_vacancies_info(sj_api_url, sj_headers, language)
+        found_hh_vacancies = fetch_hh.fetch_hh_vacancies_info(hh_speciality, 1, 30, language)
+        found_sj_vacancies = fetch_sj.fetch_sj_vacancies_info(sj_headers, language)
 
         vacancies_hh_processed = 0
         vacancies_sj_processed = 0
