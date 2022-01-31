@@ -1,7 +1,7 @@
 import requests
 
 
-def fetch_sj_vacancies_info(url, headers, lang=''):
+def fetch_sj_vacancies_info(headers, lang=''):
     payload = {
         "town": "Москва",
         "catalogues": 48,
@@ -13,7 +13,7 @@ def fetch_sj_vacancies_info(url, headers, lang=''):
         payload["keywords[0][skwc]"] = "and"
         payload["keywords[0][keys]"] = lang
 
-    response = requests.get(url, params=payload, headers=headers)
+    response = requests.get('https://api.superjob.ru/2.0/vacancies/', params=payload, headers=headers)
     response.raise_for_status()
     all_vacancies = response.json()["objects"]
 
@@ -25,7 +25,7 @@ def fetch_sj_vacancies_info(url, headers, lang=''):
         page += 1
         payload["page"] = page
 
-        response = requests.get(url, params=payload, headers=headers)
+        response = requests.get('https://api.superjob.ru/2.0/vacancies/', params=payload, headers=headers)
         response.raise_for_status()
 
         all_vacancies += response.json()["objects"]
