@@ -37,13 +37,3 @@ def fetch_hh_vacancies_info(text, area, period=0, lang=''):
             vacancies_result += all_vacancies["items"]
 
     return [vacancies_result, vacancies_count]
-
-
-def predict_rub_salary(salary):
-    if salary is None or salary["currency"] != "RUR":
-        return None
-
-    if salary["from"] and salary["to"]:
-        return (salary["from"] + salary["to"]) / 2
-    else:
-        return (salary["from"] or 0) * 1.2 + (salary["to"] or 0) * 0.8

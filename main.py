@@ -7,6 +7,16 @@ import fetch_hh
 import fetch_sj
 
 
+def predict_rub_salary(salary_currency, salary_from, salary_to):
+    if salary_currency == "RUR" or salary_currency == "rub":
+        if salary_from and salary_to:
+            return (salary_from + salary_to) / 2
+        else:
+            return (salary_from or 0) * 1.2 + (salary_to or 0) * 0.8
+    else:
+        return None
+
+
 if __name__ == '__main__':
     load_dotenv()
 
@@ -33,13 +43,25 @@ if __name__ == '__main__':
         sj_salary_sum = 0
 
         for vacancy in found_hh_vacancies[0]:
-            vacancy_salary = fetch_hh.predict_rub_salary(vacancy['salary'])
+            if vacancy['salary']:
+                vacancy_salary = predict_rub_salary(vacancy['salary']['currency'],
+                                                    vacancy['salary']['from'],
+                                                    vacancy['salary']['to'])
+            else:
+                vacancy_salary = None
+
             if vacancy_salary:
                 hh_salary_sum += int(vacancy_salary)
                 vacancies_hh_processed += 1
 
         for vacancy in found_sj_vacancies[0]:
-            vacancy_salary = fetch_sj.predict_rub_salary_for_superJob(vacancy)
+            if vacancy["payment_from"] and vacancy["payment_to"]:
+                vacancy_salary = predict_rub_salary(vacancy["currency"],
+                                                    vacancy["payment_from"],
+                                                    vacancy["payment_to"])
+            else:
+                vacancy_salary = None
+
             if vacancy_salary:
                 sj_salary_sum += int(vacancy_salary)
                 vacancies_sj_processed += 1

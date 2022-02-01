@@ -31,13 +31,3 @@ def fetch_sj_vacancies_info(headers, lang=''):
         all_vacancies += response.json()["objects"]
 
     return [all_vacancies, vacancies_count]
-
-
-def predict_rub_salary_for_superJob(vacancy):
-    if vacancy["payment_from"] + vacancy["payment_to"] == 0 or vacancy["currency"] != "rub":
-        return None
-
-    if vacancy["payment_from"] and vacancy["payment_to"]:
-        return (vacancy["payment_from"] + vacancy["payment_to"]) / 2
-    else:
-        return (vacancy["payment_from"] or 0) * 1.2 + (vacancy["payment_to"] or 0) * 0.8
