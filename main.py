@@ -32,8 +32,11 @@ if __name__ == '__main__':
     hh_table = []
     sj_table = []
 
+    hh_search_city = 1  # City`s id. 1 - Moscow
+    hh_search_period = 30
+
     for language in pop_languages:
-        found_hh_vacancies = fetch_hh.fetch_hh_vacancies_info(hh_speciality, 1, 30, language)
+        found_hh_vacancies = fetch_hh.fetch_hh_vacancies_info(hh_speciality, hh_search_city, hh_search_period, language)
         found_sj_vacancies = fetch_sj.fetch_sj_vacancies_info(sj_headers, language)
 
         vacancies_hh_processed = 0
