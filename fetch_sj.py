@@ -15,19 +15,24 @@ def fetch_sj_vacancies_info(headers, lang=''):
 
     response = requests.get('https://api.superjob.ru/2.0/vacancies/', params=payload, headers=headers)
     response.raise_for_status()
-    all_vacancies = response.json()["objects"]
 
-    vacancies_count = response.json()["total"]
+    all_info = response.json()
+
+    all_vacancies = all_info["objects"]
+
+    vacancies_count = all_info["total"]
 
     page = 0
 
-    while response.json()["more"]:
+    while all_info["more"]:
         page += 1
         payload["page"] = page
 
         response = requests.get('https://api.superjob.ru/2.0/vacancies/', params=payload, headers=headers)
         response.raise_for_status()
 
-        all_vacancies += response.json()["objects"]
+        all_info = response.json()
+
+        all_vacancies += all_info["objects"]
 
     return [all_vacancies, vacancies_count]

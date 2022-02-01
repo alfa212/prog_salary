@@ -8,7 +8,7 @@ import fetch_sj
 
 
 def predict_rub_salary(salary_currency, salary_from, salary_to):
-    if salary_currency == "RUR" or salary_currency == "rub":
+    if salary_currency == "RUR" or salary_currency == 'rub':
         if salary_from and salary_to:
             return (salary_from + salary_to) / 2
         else:
@@ -58,7 +58,7 @@ if __name__ == '__main__':
                 vacancies_hh_processed += 1
 
         for vacancy in found_sj_vacancies[0]:
-            if vacancy["payment_from"] and vacancy["payment_to"]:
+            if vacancy["payment_from"] or vacancy["payment_to"]:
                 vacancy_salary = predict_rub_salary(vacancy["currency"],
                                                     vacancy["payment_from"],
                                                     vacancy["payment_to"])
@@ -72,13 +72,13 @@ if __name__ == '__main__':
         hh_table += [[language,
                       found_hh_vacancies[1],
                       vacancies_hh_processed,
-                      int(hh_salary_sum / vacancies_hh_processed)
+                      int(hh_salary_sum / (vacancies_hh_processed or 1))
                       ]]
 
         sj_table += [[language,
                       found_sj_vacancies[1],
                       vacancies_sj_processed,
-                      int(sj_salary_sum / vacancies_sj_processed)
+                      int(sj_salary_sum / (vacancies_sj_processed or 1))
                       ]]
 
     output_hh_table = AsciiTable(table_heading + hh_table, 'HeadHunter Moscow')
