@@ -85,5 +85,3 @@ if __name__ == '__main__':
     output_sj_table = AsciiTable(table_heading + sj_table, 'SuperJob Moscow')
 
     print(f"""{output_hh_table.table}\n\n{output_sj_table.table}""")
-
-
