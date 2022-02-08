@@ -8,13 +8,13 @@ import fetch_sj
 
 
 def predict_rub_salary(salary_currency, salary_from, salary_to):
-    if salary_currency == "RUR" or salary_currency == 'rub':
-        if salary_from and salary_to:
-            return (salary_from + salary_to) / 2
-        else:
-            return (salary_from or 0) * 1.2 + (salary_to or 0) * 0.8
-    else:
+    if salary_currency != "RUR" and salary_currency != 'rub':
         return None
+
+    if salary_from and salary_to:
+        return (salary_from + salary_to) / 2
+    else:
+        return (salary_from or 0) * 1.2 + (salary_to or 0) * 0.8
 
 
 if __name__ == '__main__':
@@ -46,28 +46,32 @@ if __name__ == '__main__':
         sj_salary_sum = 0
 
         for vacancy in found_hh_vacancies[0]:
-            if vacancy['salary']:
-                vacancy_salary = predict_rub_salary(vacancy['salary']['currency'],
-                                                    vacancy['salary']['from'],
-                                                    vacancy['salary']['to'])
-            else:
-                vacancy_salary = None
+            if not vacancy['salary']:
+                continue
 
-            if vacancy_salary:
-                hh_salary_sum += int(vacancy_salary)
-                vacancies_hh_processed += 1
+            vacancy_salary = predict_rub_salary(vacancy['salary']['currency'],
+                                                vacancy['salary']['from'],
+                                                vacancy['salary']['to'])
+
+            if not vacancy_salary:
+                continue
+
+            hh_salary_sum += int(vacancy_salary)
+            vacancies_hh_processed += 1
 
         for vacancy in found_sj_vacancies[0]:
-            if vacancy["payment_from"] or vacancy["payment_to"]:
-                vacancy_salary = predict_rub_salary(vacancy["currency"],
-                                                    vacancy["payment_from"],
-                                                    vacancy["payment_to"])
-            else:
-                vacancy_salary = None
+            if not vacancy["payment_from"] and not vacancy["payment_to"]:
+                continue
 
-            if vacancy_salary:
-                sj_salary_sum += int(vacancy_salary)
-                vacancies_sj_processed += 1
+            vacancy_salary = predict_rub_salary(vacancy["currency"],
+                                                vacancy["payment_from"],
+                                                vacancy["payment_to"])
+
+            if not vacancy_salary:
+                continue
+
+            sj_salary_sum += int(vacancy_salary)
+            vacancies_sj_processed += 1
 
         hh_table += [[language,
                       found_hh_vacancies[1],
