@@ -8,7 +8,7 @@ import fetch_sj
 
 
 def predict_rub_salary(salary_currency, salary_from, salary_to):
-    if salary_currency != "RUR" and salary_currency != 'rub':
+    if salary_currency not in ["RUR", 'rub']:
         return None
 
     if salary_from and salary_to:
